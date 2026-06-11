@@ -128,14 +128,12 @@ public class AuthServiceImpl implements AuthService {
     }
 
     private void saveRefreshToken(User user, String token) {
-
         RefreshToken refreshToken = RefreshToken.builder()
                 .token(token)
                 .user(user)
                 .expiryDate(LocalDateTime.now().plusNanos(refreshTokenExpirationMs * 1_000_000))
                 .revoked(false)
                 .build();
-
         refreshTokenRepository.save(refreshToken);
     }
 
@@ -152,7 +150,6 @@ public class AuthServiceImpl implements AuthService {
     }
 
     private UserResponse toUserResponse(User user) {
-
         return UserResponse.builder()
                 .id(user.getId())
                 .username(user.getUsername())

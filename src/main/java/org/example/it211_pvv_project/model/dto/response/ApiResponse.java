@@ -16,10 +16,3 @@ public class ApiResponse<T> {
     // Dữ liệu trả về
     private T data;
 }
-
-//        Toàn bộ API sau này sẽ trả theo format:
-//        {
-//        "success": true,
-//        "message": "Login successful",
-//        "data": {}
-//        }
