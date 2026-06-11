@@ -2,7 +2,6 @@ package org.example.it211_pvv_project.model.dto.response;
 
 import lombok.*;
 
-//Thông tin bài nộp.
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -14,6 +13,7 @@ public class SubmissionResponse {
     private String courseName;
     private String githubUrl;
     private String reportUrl;
+    private String note;
     private Integer score;
     private String feedback;
     private String status;
