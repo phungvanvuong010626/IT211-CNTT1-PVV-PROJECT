@@ -1,5 +1,6 @@
 package org.example.it211_pvv_project.service;
 
+import org.example.it211_pvv_project.model.dto.request.ChangePasswordRequest;
 import org.example.it211_pvv_project.model.dto.request.LoginRequest;
 import org.example.it211_pvv_project.model.dto.request.RefreshTokenRequest;
 import org.example.it211_pvv_project.model.dto.request.RegisterRequest;
@@ -11,4 +12,9 @@ public interface AuthService {
     LoginResponse login(LoginRequest request);
     LoginResponse refreshToken(RefreshTokenRequest request);
     void logout(String accessToken);
+    // Đổi mật khẩu
+    void changePassword(
+            ChangePasswordRequest request,
+            String username
+    );
 }

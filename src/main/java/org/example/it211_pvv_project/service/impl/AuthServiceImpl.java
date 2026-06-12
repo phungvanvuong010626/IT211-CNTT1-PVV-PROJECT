@@ -2,7 +2,9 @@ package org.example.it211_pvv_project.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.example.it211_pvv_project.exception.ConflictException;
+import org.example.it211_pvv_project.exception.ResourceNotFoundException;
 import org.example.it211_pvv_project.exception.UnauthorizedException;
+import org.example.it211_pvv_project.model.dto.request.ChangePasswordRequest;
 import org.example.it211_pvv_project.model.dto.request.LoginRequest;
 import org.example.it211_pvv_project.model.dto.request.RefreshTokenRequest;
 import org.example.it211_pvv_project.model.dto.request.RegisterRequest;
@@ -158,5 +160,38 @@ public class AuthServiceImpl implements AuthService {
                 .role(user.getRole().name())
                 .status(user.getStatus().name())
                 .build();
+    }
+
+    @Override
+    public void changePassword(
+            ChangePasswordRequest request,
+            String username
+    ) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Không tìm thấy người dùng"
+                        ));
+
+        if (!passwordEncoder.matches(
+                request.getCurrentPassword(),
+                user.getPassword()
+        )) {
+            throw new UnauthorizedException(
+                    "Mật khẩu hiện tại không đúng"
+            );
+        }
+        if (!request.getNewPassword()
+                .equals(request.getConfirmPassword())) {
+            throw new ConflictException(
+                    "Xác nhận mật khẩu không khớp"
+            );
+        }
+        user.setPassword(
+                passwordEncoder.encode(
+                        request.getNewPassword()
+                )
+        );
+        userRepository.save(user);
     }
 }

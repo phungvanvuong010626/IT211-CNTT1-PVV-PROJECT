@@ -31,7 +31,6 @@ public class CourseServiceImpl implements CourseService {
         Page<Course> courses = (keyword == null || keyword.isBlank())
                 ? courseRepository.findByActiveTrue(pageRequest)
                 : courseRepository.searchCourses(keyword, pageRequest);
-
         return courses.map(this::toResponse);
     }
 

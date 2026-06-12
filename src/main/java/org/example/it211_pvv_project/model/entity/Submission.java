@@ -60,7 +60,9 @@ public class Submission {
 
     @PrePersist
     public void prePersist() {
-        this.status = SubmissionStatus.PENDING;
+        if (this.status == null) {
+            this.status = SubmissionStatus.PENDING;
+        }
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
     }

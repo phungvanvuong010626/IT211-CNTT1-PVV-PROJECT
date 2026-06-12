@@ -2,6 +2,7 @@ package org.example.it211_pvv_project.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.example.it211_pvv_project.model.dto.request.ChangePasswordRequest;
 import org.example.it211_pvv_project.model.dto.request.LoginRequest;
 import org.example.it211_pvv_project.model.dto.request.RefreshTokenRequest;
 import org.example.it211_pvv_project.model.dto.request.RegisterRequest;
@@ -12,6 +13,7 @@ import org.example.it211_pvv_project.service.AuthService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
 
 //xác thực người dùng.
 @RestController
@@ -70,6 +72,27 @@ public class AuthController {
                 ApiResponse.<Void>builder()
                         .success(true)
                         .message("Đăng xuất thành công")
+                        .data(null)
+                        .build()
+        );
+    }
+
+
+    @PutMapping("/change-password")
+    public ResponseEntity<ApiResponse<Void>> changePassword(
+            @Valid @RequestBody ChangePasswordRequest request,
+            Authentication authentication
+    ) {
+
+        authService.changePassword(
+                request,
+                authentication.getName()
+        );
+
+        return ResponseEntity.ok(
+                ApiResponse.<Void>builder()
+                        .success(true)
+                        .message("Đổi mật khẩu thành công")
                         .data(null)
                         .build()
         );

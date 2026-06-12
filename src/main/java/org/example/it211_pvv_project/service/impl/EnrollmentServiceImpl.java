@@ -2,6 +2,7 @@ package org.example.it211_pvv_project.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.example.it211_pvv_project.exception.ConflictException;
+import org.example.it211_pvv_project.exception.InvalidStateException;
 import org.example.it211_pvv_project.exception.ResourceNotFoundException;
 import org.example.it211_pvv_project.model.dto.response.CourseResponse;
 import org.example.it211_pvv_project.model.entity.Course;
@@ -13,9 +14,7 @@ import org.example.it211_pvv_project.repository.UserRepository;
 import org.example.it211_pvv_project.service.EnrollmentService;
 import org.springframework.stereotype.Service;
 
-/**
- * Xử lý sinh viên đăng ký khóa học.
- */
+//Xử lý sinh viên đăng ký khóa học.
 @Service
 @RequiredArgsConstructor
 public class EnrollmentServiceImpl implements EnrollmentService {
@@ -31,6 +30,10 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy khóa học"));
+
+        if (!course.getActive()) {
+            throw new InvalidStateException("Khóa học đã bị vô hiệu hóa, không thể đăng ký");
+        }
 
         if (enrollmentRepository.existsByStudentAndCourse(student, course)) {
             throw new ConflictException("Sinh viên đã đăng ký khóa học này");
